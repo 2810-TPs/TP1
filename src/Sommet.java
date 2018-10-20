@@ -54,5 +54,9 @@ public class Sommet {
 		this.chemins = chemins;
 	}
 	
+	public void ajouterChemin(Arc arc) {
+		
+		chemins.add(arc);
+	}
 	
 }
