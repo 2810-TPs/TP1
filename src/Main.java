@@ -15,6 +15,10 @@ public class Main {
 		
 		graphe.creerGraphe(lecteur); //NOM FICHIER PAS EN PARAMETRE
 		lecteur.close();
+		
+		Vehicule auto = new Vehicule();
+		Graphe sousGraphe = null;
+		sousGraphe = graphe.extraireSousGraphe(graphe.getSommets().get(24), auto);
 	}
 
 }

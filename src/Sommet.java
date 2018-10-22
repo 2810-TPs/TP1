@@ -59,4 +59,23 @@ public class Sommet {
 		chemins.add(arc);
 	}
 	
+	public void rechargerVehicule(Vehicule vehicule) {
+		vehicule.rechargerBatterie();
+	}
+	//fonction qui donne lindex des chemins ayant un sommet destination rechargeable
+	public ArrayList<Arc> trouverSommetsRechargeables(){
+		
+		//contient les index de chaque chemins qui sont relies a un sommet rechargeable
+		ArrayList<Arc> list = new ArrayList<>();
+		
+		for (Arc chemin : chemins) {
+			//trouver lautre sommet
+			Sommet destination = (this == chemin.getSommet1()) ? chemin.getSommet2() : chemin.getSommet1();
+			if (destination.estRechargeable) {
+				list.add(chemin);
+			}
+					
+		}
+		return list;
+	}
 }
