@@ -6,9 +6,9 @@ public class Vehicule {
 	private char risque;
 	
 	public Vehicule() {
-		type = 'N'; //Ni-NH
+		type = 'n'; //Ni-NH
 		batterie = 100;
-		risque = 'F';
+		risque = 'f';
 	}
 	
 	public Vehicule(double batterie, char type , char risque) {
@@ -20,29 +20,29 @@ public class Vehicule {
 	public double consommerBatterie(int duree) {
 		//NI-NH
 		double consommation = 0;
-		if (type == 'N') {
+		if (type == 'n') {
 			switch (risque) {
-			case 'F':
-				consommation = (6 * 24)/60;
+			case 'f':
+				consommation = (6 * duree)/60;
 				break;
-			case 'M':
-				consommation = 12 * (duree/60);
+			case 'm':
+				consommation = (12 * duree)/60;
 				break;
-			case 'H':
-				consommation = 48 * (duree/60);
+			case 'h':
+				consommation = (48 * duree)/60;
 				break;
 			}
 		}
 		else {
 			switch (risque) {
-			case 'F':
-				consommation = 5 * (duree/60);
+			case 'f':
+				consommation = (5 * duree)/60;
 				break;
-			case 'M':
-				consommation = 10 * (duree/60);
+			case 'm':
+				consommation = (10 * duree)/60;
 				break;
-			case 'H':
-				consommation = 30 * (duree/60);
+			case 'h':
+				consommation = (30 * duree)/60;
 				break;
 			}
 		}

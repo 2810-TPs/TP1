@@ -92,7 +92,6 @@ public class Graphe {
 		Graphe graphe = new Graphe();
 		graphe.getSommets().put(sommet.getIdentifiant(), sommet);
 		creerTrajetLePlusLong(graphe ,sommet , vehicule);
-		System.out.println("Batterie at the end"+vehicule.getBatterie());
 		return graphe;
 	}
 	
@@ -123,14 +122,10 @@ public class Graphe {
 		if (chemins.size() == 0) {
 			chemins = enleverCheminsInvalides(graphe,sommet, sommet.getChemins() , vehicule);	
 		}
-		if (chemins.size() == 0) {
-			vehicule.setType('L');
-			chemins = enleverCheminsInvalides(graphe,sommet, sommet.getChemins() , vehicule);
-		}
 		if (chemins.size() == 0)
 			return null;
 		
-		return trouverCheminPlusLong(graphe,sommet,chemins, vehicule);
+		return trouverCheminPlusLong(graphe,sommet, chemins, vehicule);
 	}
 	
 	public Arc trouverCheminPlusLong(Graphe graphe,Sommet sommet, ArrayList<Arc> chemins , Vehicule vehicule) {
