@@ -87,16 +87,37 @@ public class Graphe {
 		sommet2.ajouterChemin(arc);
 	}
 	
-	public Graphe extraireSousGraphe(Sommet sommet, Vehicule vehicule) {
+	public Graphe extraireSousGraphe(Sommet source, Vehicule vehicule) {
 		
 		Graphe graphe = new Graphe();
-		graphe.getSommets().put(sommet.getIdentifiant(), sommet);
-		creerTrajetLePlusLong(graphe ,sommet , vehicule);
-		System.out.println("BATTERIE FINALE: "+vehicule.getBatterie());
+		/*graphe.getSommets().put(sommet.getIdentifiant(), sommet);
+		creerTrajetLePlusLong(graphe ,sommet , vehicule);*/
+		creerParcours(graphe,source,vehicule);
 		return graphe;
 	}
 	
+	public boolean verifierChemin(Arc arc, Vehicule vehicule) {
+		if (vehicule.consommerBatterie(arc.getDistance()) >= 20)
+			return true;
+		return false;
+	}
+	
+	public boolean verifierReccurence(Graphe graphe , Sommet source) {
+		if (graphe.getSommets().get(source.getIdentifiant()) == null)
+			return true;
+		return false;
+	}
+	public void creerParcours(Graphe graphe, Sommet source, Vehicule vehicule) {
+		ArrayList<Arc> chemins = source.getChemins();
+		graphe.getSommets().put(source.getIdentifiant(), source);
+		for (Arc chemin : chemins) {
+			if (verifierChemin(chemin,vehicule) && verifierReccurence(graphe, chemin.getOtherSommet(source))) {
+				creerParcours(graphe, chemin.getOtherSommet(source) ,new Vehicule(vehicule.consommerBatterie(chemin.getDistance()),vehicule.getType(),vehicule.getRisque()));
+			}
+		}
+	}
 	//fonction qui trouve le chemin le plus long a chaque fois
+	/*
 	public void creerTrajetLePlusLong(Graphe graphe ,Sommet sommet , Vehicule vehicule) {		
 		Arc cheminSuivant = trouverCheminSuivant(graphe, sommet, vehicule);
 		if (cheminSuivant == null )
@@ -110,7 +131,6 @@ public class Graphe {
 			vehicule.rechargerBatterie();
 		
 		graphe.sommets.put( destinationSuivante.getIdentifiant(),  destinationSuivante);
-		System.out.println(destinationSuivante.getIdentifiant());
 		creerTrajetLePlusLong(graphe ,destinationSuivante , vehicule);
 	}
 	
@@ -174,5 +194,5 @@ public class Graphe {
 		return true;
 	}
 	
-	
+	*/
 }

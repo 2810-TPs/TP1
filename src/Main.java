@@ -8,9 +8,8 @@ import java.util.Scanner;
 public class Main {
 
 	/**QUESTIONS:
-	 * Est ce que l'on doit prendre en compte la batterie (> 20 %) dans la fonction extraire sous graphe?
-	 * Voiture Ni-nh en priorite et ensuite tester LI-ion? 
-	 * extraireSousGraphe() est ce quil faut demander le type de transport? */
+	 * Affichage objet1 pas sure?? 
+	 * Faut il faire a chaque fois une verification pour tous les entreees?*/
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		Graphe graphe = new Graphe();
@@ -102,7 +101,7 @@ public class Main {
 		System.out.println();
 		Sommet source = graphe.getSommets().get(identifiant);
 		
-		graphe.extraireSousGraphe(source,vehicule);
+		graphe = graphe.extraireSousGraphe(source,vehicule);
 	}
 
 	public static String proposerChoixMenu(Scanner scanner) {
