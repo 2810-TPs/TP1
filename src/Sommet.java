@@ -7,6 +7,11 @@ public class Sommet {
 	
 	private ArrayList<Arc> chemins;
 	
+	private Integer distancePlusCourte;
+	
+	private ArrayList<Sommet> cheminPlusCourt;
+
+	
 	public Sommet() {
 		identifiant = 0;
 		estRechargeable = false;
@@ -65,5 +70,17 @@ public class Sommet {
 					
 		}
 		return list;
+	}
+	public Integer getDistancePlusCourte() {
+		return distancePlusCourte;
+	}
+	public void setDistancePlusCourte(Integer distancePlusCourte) {
+		this.distancePlusCourte = distancePlusCourte;
+	}
+	public ArrayList<Sommet> getCheminPlusCourt() {
+		return cheminPlusCourt;
+	}
+	public void setCheminPlusCourt(ArrayList<Sommet> cheminPlusCourt) {
+		this.cheminPlusCourt = cheminPlusCourt;
 	}
 }
