@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 
+
 public class Sommet {
 	private int identifiant;
 	
@@ -9,17 +10,25 @@ public class Sommet {
 	
 	private ArrayList<Arc> chemins;
 	
+	private Integer distancePlusCourte;
+	
+	private ArrayList<Sommet> cheminPlusCourt;
+	
 	public Sommet() {
 		identifiant = 0;
 		type = "";
 		estRechargeable = false;
 		chemins = new ArrayList<Arc>();
+		distancePlusCourte.equals(Integer.MAX_VALUE); // distance la plus courte d'une source
+		cheminPlusCourt = new ArrayList<Sommet>();
 	}
 	public Sommet(int identifiant, boolean estRechargeable) {
 		type = "";
 		this.identifiant = identifiant;
 		this.estRechargeable = estRechargeable;
 		chemins = new ArrayList<Arc>();
+		distancePlusCourte.equals(Integer.MAX_VALUE); // distance la plus courte d'une source
+		cheminPlusCourt = new ArrayList<Sommet>();
 	}
 	
 	
@@ -54,5 +63,18 @@ public class Sommet {
 		this.chemins = chemins;
 	}
 	
+	public int getDistancePlusCourte(){
+		return distancePlusCourte;
+	}
 	
+	public void setDistancePlusCourte(int distance){
+		this.distancePlusCourte.equals(distance);
+		
+	}
+	public ArrayList<Sommet> getCheminPlusCourt() {
+		return cheminPlusCourt;
+	}
+	public void setCheminPlusCourt(ArrayList<Sommet> cheminPlusCourt) {
+		this.cheminPlusCourt = cheminPlusCourt;
+	}
 }
