@@ -92,6 +92,7 @@ public class Graphe {
 		Graphe graphe = new Graphe();
 		graphe.getSommets().put(sommet.getIdentifiant(), sommet);
 		creerTrajetLePlusLong(graphe ,sommet , vehicule);
+		System.out.println("BATTERIE FINALE: "+vehicule.getBatterie());
 		return graphe;
 	}
 	
