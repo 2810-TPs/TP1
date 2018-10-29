@@ -28,6 +28,16 @@ public class Graphe {
 		this.sommets = sommets;
 	}
 	
+	 public void lireGraphe(){
+    	 
+	    	for(java.util.Map.Entry<Integer, Sommet> entry :sommets.entrySet()) {
+				Sommet sommet = entry.getValue();
+				sommet.afficher();
+				System.out.println(sommet.afficher());
+						
+		}
+	 }
+	 
 	public void creerGraphe(BufferedReader lecteur) throws IOException {
 		
 		String ligne = lecteur.readLine();
@@ -108,6 +118,7 @@ public class Graphe {
 		return false;
 	}
 	public void creerParcours(Graphe graphe, Sommet source, Vehicule vehicule) {
+		System.out.println("Vehicule batterie:" + vehicule.getBatterie());
 		ArrayList<Arc> chemins = source.getChemins();
 		graphe.getSommets().put(source.getIdentifiant(), source);
 		for (Arc chemin : chemins) {
@@ -195,4 +206,111 @@ public class Graphe {
 	}
 	
 	*/
+	public void plusCourtChemin(Sommet source, Sommet destination){
+		source.setDistancePlusCourte(0); // la distance de la source est initialise a 0
+		source.getCheminPlusCourt().add(source);
+		HashMap<Integer,Sommet> sommetsVisites = new HashMap<Integer,Sommet>();
+		ArrayList<Sommet> sommetsNonVisites = new ArrayList<Sommet>(this.sommets.values());
+		Sommet sommetCourant = source;
+		while(!sommetsVisites.containsValue(destination)){ // tant qu'on a pas atteint la destination
+			sommetsVisites.put(sommetCourant.getIdentifiant(),sommetCourant); // on ajoute les sommets courants au sommets visites
+			for(int i = 0; i < sommetCourant.getChemins().size(); i++ ){ // on verifie tous les voisins du sommets courant
+				if(sommetCourant.getDistancePlusCourte() + sommetCourant.getChemins().get(i).getDistance() < sommetCourant.getChemins().get(i).getOtherSommet(sommetCourant).getDistancePlusCourte() && !sommetsVisites.containsValue(sommetCourant.getChemins().get(i).getOtherSommet(sommetCourant))){
+					//si on a une distance inferieure, on met a jour la distance et le chemin le plus court du sommet adjacent 
+					sommetCourant.getChemins().get(i).getOtherSommet(sommetCourant).setDistancePlusCourte(sommetCourant.getDistancePlusCourte() + sommetCourant.getChemins().get(i).getDistance());
+					sommetCourant.getChemins().get(i).getOtherSommet(sommetCourant).setCheminPlusCourt(sommetCourant.getCheminPlusCourt());
+					sommetCourant.getChemins().get(i).getOtherSommet(sommetCourant).getCheminPlusCourt().add(sommetCourant.getChemins().get(i).getOtherSommet(sommetCourant));
+				}
+			}
+			sommetsNonVisites.remove(sommetCourant);
+			if(sommetsNonVisites.size() > 0)
+				sommetCourant = sommetsNonVisites.get(0);
+			else
+				return;
+			for(int i = 1; i < sommetsNonVisites.size();i++){
+				if(sommetCourant.getDistancePlusCourte()>sommetsNonVisites.get(i).getDistancePlusCourte()){ 
+					sommetCourant = sommetsNonVisites.get(i); //le sommet courant est celui dont la distance est la plus petite
+				}
+			}
+		}
+	}
+
+	
+			
+	public Vehicule parcoursChemin(Sommet destination, char risque){
+		Vehicule vehicule = new Vehicule(100,'n',risque);
+		int distanceTotale = 0;
+		switch(risque){
+			case 'f':
+				distanceTotale = verificationSecuriteParcours("f",destination,vehicule);
+				break;
+			case 'm':
+				distanceTotale = verificationSecuriteParcours("m",destination,vehicule);
+				break;
+			case 'h':
+				distanceTotale = verificationSecuriteParcours("h",destination,vehicule);
+					break;
+		}
+		destination.setDistancePlusCourte(distanceTotale); //on ajoute les temps de rechargement a la duree minimale;
+		return vehicule;
+	}
+	
+	public int verificationSecuriteParcours(String risque, Sommet destination,Vehicule vehicule){
+		vehicule.setBatterie(vehicule.consommerBatterie(destination.getDistancePlusCourte())); //on verifie l'etat final de la batterie apres le trajet
+		int dureeTotale = parcoursCheminSommetParSommet(destination,vehicule);
+
+		if (vehicule.getBatterie() <= 20){ //si apres avoir parcouru tous les sommets, la batterie est encore sous 20%, on essaye avec le type L
+			vehicule.setType('l');
+			vehicule.setBatterie(100);
+			vehicule.setBatterie(vehicule.consommerBatterie(destination.getDistancePlusCourte()));
+			dureeTotale = parcoursCheminSommetParSommet(destination,vehicule);
+		}	
+		return dureeTotale;
+	}
+	public int parcoursCheminSommetParSommet(Sommet destination,Vehicule vehicule){
+		int dureeTotale = destination.getDistancePlusCourte();
+		boolean parcoursImpossible = false;
+		while(vehicule.getBatterie() <= 20 && !parcoursImpossible){
+			vehicule.setBatterie(100);
+			for(int i = 1; i < destination.getCheminPlusCourt().size() && !parcoursImpossible;i++){
+				//on parcoure le chemin tant qu'une station de recharge n'est pas rencontrer
+				vehicule.setBatterie(vehicule.consommerBatterie(destination.getCheminPlusCourt().get(i).getDistancePlusCourte() - destination.getCheminPlusCourt().get(i-1).getDistancePlusCourte()));
+				if(vehicule.getBatterie() <= 20){
+					parcoursImpossible = true;
+				}
+				if(destination.getCheminPlusCourt().get(i).isEstRechargeable() && !parcoursImpossible){ //sommet actuel est celui qui contient une station de recharge
+					dureeTotale += 120; //2 heures de chargement
+					vehicule.setBatterie(100);					
+				}	
+			}
+		}
+	return dureeTotale;
+	}
+	
+	
+	public void afficherParcours(Vehicule vehicule,Sommet destination){
+		if(vehicule.getBatterie() <= 20){
+			System.out.println("Le transport est refuser par manque de batterie");
+			return;
+		}
+		if(vehicule.getType() == 'n')
+			System.out.println("Type de vehicule utilise : NI-NH");
+		else
+			System.out.println("Type de vehicule utilise : Li-ion");
+		System.out.println("Pourcentage de batterie : " + vehicule.getBatterie());
+		System.out.println("Parcours suivi:");
+		for(int i = 0; i < destination.getCheminPlusCourt().size();i++){
+			System.out.print(" -> "+destination.getCheminPlusCourt().get(i).getIdentifiant());
+		}
+		System.out.println();
+		System.out.println("Duree Totale du trajet : " + destination.getDistancePlusCourte());
+	}
+	
+	public void clearSommets(){
+		for(Sommet sommet:sommets.values()){
+			sommet.setDistancePlusCourte(Integer.MAX_VALUE);
+			sommet.setCheminPlusCourt(new ArrayList<Sommet>());
+		}
+	}
+
 }

@@ -16,7 +16,7 @@ public class Main {
 		
 		boolean quitter = false;
 		Scanner scanner = new Scanner(System.in);
-		
+		afficherCreerGraphe(scanner, graphe);
 		while (!quitter) {		
 			String choix = proposerChoixMenu(scanner);
 			quitter = executerChoix(scanner,choix,graphe);
@@ -49,6 +49,7 @@ public class Main {
 			lecteur = new BufferedReader(new FileReader(fichier));
 			graphe.creerGraphe(lecteur);
 			lecteur.close();
+			graphe.lireGraphe();
 			//afficher fichier
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -76,24 +77,28 @@ public class Main {
 		System.out.println("(m) Moyen  Risque.");
 		System.out.println("(h) Haut   Risque.");
 		System.out.print("Entrer votre choix: ");
-		String typeTransport = scanner.nextLine();
+		String typeTransport = scanner.nextLine().toLowerCase();
 		
-		//graphe.plusCourtChemin(source,destination,typeTransport);
+		graphe.plusCourtChemin(source,destination);
+		Vehicule vehicule = graphe.parcoursChemin(destination,typeTransport.charAt(0));
+		graphe.afficherParcours(vehicule, destination);
+		graphe.clearSommets();
 		
 	}
+
 	public static void extraireSousGraphe(Scanner scanner,Graphe graphe) {
 		System.out.println("Entrer type de vehicule: ");
 		System.out.println("(n) NI-NH. ");
 		System.out.println("(l) LI-ion.");
 		System.out.print("Entrer votre choix: ");
-		String typeVehicule = scanner.nextLine();
+		String typeVehicule = scanner.nextLine().toLowerCase();
 		
 		System.out.println("Entrer type de transport: ");
 		System.out.println("    (f) Faible Risque.");
 		System.out.println("    (m) Moyen  Risque.");
 		System.out.println("    (h) Haut   Risque.");
 		System.out.print("Entrer votre choix: ");
-		String typeTransport = scanner.nextLine();
+		String typeTransport = scanner.nextLine().toLowerCase();
 		Vehicule vehicule = new Vehicule(100,typeVehicule.charAt(0),typeTransport.charAt(0));
 		
 		System.out.print("Entrer le point de depart: ");
@@ -102,6 +107,7 @@ public class Main {
 		Sommet source = graphe.getSommets().get(identifiant);
 		
 		graphe = graphe.extraireSousGraphe(source,vehicule);
+		graphe.lireGraphe();
 	}
 
 	public static String proposerChoixMenu(Scanner scanner) {
@@ -110,7 +116,7 @@ public class Main {
 		String choix = scanner.nextLine();
 		if (choix.equals("a") || choix.equals("b") || choix.equals("c") || choix.equals("d"))
 			return choix;
-		else  return proposerChoixMenu(scanner);
+		else  return proposerChoixMenu(scanner).toLowerCase();
 		
 	}
 	public static void afficherMenu() {
@@ -121,5 +127,11 @@ public class Main {
 		System.out.println("(d) Quitter.");
 		System.out.println("-----------------------------------------------------------------");
 		
+	}
+	
+	public static void afficherCreerGraphe(Scanner scanner, Graphe graphe) throws IOException {
+		System.out.println("Creer la carte");
+		while (graphe.getSommets().isEmpty())
+			mettreAJourCarte(scanner,graphe);
 	}
 }

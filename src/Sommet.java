@@ -7,15 +7,24 @@ public class Sommet {
 	
 	private ArrayList<Arc> chemins;
 	
+	private int distancePlusCourte;
+	
+	private ArrayList<Sommet> cheminPlusCourt;
+
+	
 	public Sommet() {
 		identifiant = 0;
 		estRechargeable = false;
 		chemins = new ArrayList<Arc>();
+		distancePlusCourte = Integer.MAX_VALUE;
+		cheminPlusCourt = new ArrayList<Sommet>();
 	}
 	public Sommet(int identifiant, boolean estRechargeable) {
 		this.identifiant = identifiant;
 		this.estRechargeable = estRechargeable;
 		chemins = new ArrayList<Arc>();
+		distancePlusCourte = Integer.MAX_VALUE;
+		cheminPlusCourt = new ArrayList<Sommet>();
 	}
 	
 	
@@ -65,5 +74,40 @@ public class Sommet {
 					
 		}
 		return list;
+	}
+	public int getDistancePlusCourte() {
+		return distancePlusCourte;
+	}
+	public void setDistancePlusCourte(int distancePlusCourte) {
+		this.distancePlusCourte = distancePlusCourte;
+	}
+	public ArrayList<Sommet> getCheminPlusCourt() {
+		return cheminPlusCourt;
+	}
+	public void setCheminPlusCourt(ArrayList<Sommet> cheminPlusCourt) {
+		this.cheminPlusCourt = new ArrayList<Sommet>();
+		for(int i = 0; i < cheminPlusCourt.size(); i++){
+			this.cheminPlusCourt.add(cheminPlusCourt.get(i));
+		}
+		
+	}
+	public String afficher(){
+		
+		String resultat = "("+identifiant+", " +estRechargeable+ ", (";
+		if (chemins != null)
+		{
+			for (Arc arc : chemins)
+			{
+				resultat += "(" + arc.getOtherSommet(this).identifiant+ ", " + arc.getDistance() + "), ";
+			}
+		}
+		else
+			resultat = resultat.substring(0, resultat.length() - 2);
+		resultat = resultat.substring(0, resultat.length() - 2);
+		resultat += "))";
+		return resultat;
+		
+		
+		
 	}
 }
