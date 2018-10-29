@@ -1,33 +1,29 @@
 import java.util.ArrayList;
 
-
 public class Sommet {
 	private int identifiant;
 	
-	private String type;
-
 	private boolean estRechargeable;
 	
 	private ArrayList<Arc> chemins;
 	
-	private Integer distancePlusCourte;
+	private int distancePlusCourte;
 	
 	private ArrayList<Sommet> cheminPlusCourt;
+
 	
 	public Sommet() {
 		identifiant = 0;
-		type = "";
 		estRechargeable = false;
 		chemins = new ArrayList<Arc>();
-		distancePlusCourte.equals(Integer.MAX_VALUE); // distance la plus courte d'une source
+		distancePlusCourte = Integer.MAX_VALUE;
 		cheminPlusCourt = new ArrayList<Sommet>();
 	}
 	public Sommet(int identifiant, boolean estRechargeable) {
-		type = "";
 		this.identifiant = identifiant;
 		this.estRechargeable = estRechargeable;
 		chemins = new ArrayList<Arc>();
-		distancePlusCourte.equals(Integer.MAX_VALUE); // distance la plus courte d'une source
+		distancePlusCourte = Integer.MAX_VALUE;
 		cheminPlusCourt = new ArrayList<Sommet>();
 	}
 	
@@ -38,14 +34,6 @@ public class Sommet {
 
 	public void setIdentifiant(int identifiant) {
 		this.identifiant = identifiant;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
 	}
 
 	public boolean isEstRechargeable() {
@@ -63,18 +51,44 @@ public class Sommet {
 		this.chemins = chemins;
 	}
 	
-	public int getDistancePlusCourte(){
-		return distancePlusCourte;
+	public void ajouterChemin(Arc arc) {
+		
+		chemins.add(arc);
 	}
 	
-	public void setDistancePlusCourte(int distance){
-		this.distancePlusCourte.equals(distance);
+	public void rechargerVehicule(Vehicule vehicule) {
+		vehicule.rechargerBatterie();
+	}
+	//fonction qui donne lindex des chemins ayant un sommet destination rechargeable
+	public ArrayList<Arc> trouverSommetsRechargeables(){
 		
+		//contient les index de chaque chemins qui sont relies a un sommet rechargeable
+		ArrayList<Arc> list = new ArrayList<>();
+		
+		for (Arc chemin : chemins) {
+			//trouver lautre sommet
+			Sommet destination = (this == chemin.getSommet1()) ? chemin.getSommet2() : chemin.getSommet1();
+			if (destination.estRechargeable) {
+				list.add(chemin);
+			}
+					
+		}
+		return list;
+	}
+	public int getDistancePlusCourte() {
+		return distancePlusCourte;
+	}
+	public void setDistancePlusCourte(int distancePlusCourte) {
+		this.distancePlusCourte = distancePlusCourte;
 	}
 	public ArrayList<Sommet> getCheminPlusCourt() {
 		return cheminPlusCourt;
 	}
 	public void setCheminPlusCourt(ArrayList<Sommet> cheminPlusCourt) {
-		this.cheminPlusCourt = cheminPlusCourt;
+		this.cheminPlusCourt = new ArrayList<Sommet>();
+		for(int i = 0; i < cheminPlusCourt.size(); i++){
+			this.cheminPlusCourt.add(cheminPlusCourt.get(i));
+		}
+		
 	}
 }

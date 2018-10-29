@@ -1,17 +1,17 @@
 
 public class Vehicule {
 	
-	private char type ;
+	private String type ;
 	private double batterie ;
-	private char risque;
+	private String risque;
 	
 	public Vehicule() {
-		type = 'N'; //Ni-NH
+		type = "n"; //Ni-NH
 		batterie = 100;
-		risque = 'F';
+		risque = "f";
 	}
 	
-	public Vehicule(double batterie, char type , char risque) {
+	public Vehicule(double batterie, String type , String risque) {
 		this.batterie = batterie;
 		this.type = type ;
 		this.risque = risque;
@@ -20,29 +20,29 @@ public class Vehicule {
 	public double consommerBatterie(int duree) {
 		//NI-NH
 		double consommation = 0;
-		if (type == 'N') {
+		if (type == "n") {
 			switch (risque) {
-			case 'F':
-				consommation = (6 * duree)/60;
+			case "f":
+				consommation = (double)(6 * duree)/60;
 				break;
-			case 'M':
-				consommation = (12 * duree)/60;
+			case "m":
+				consommation = (double)(12 * duree)/60;
 				break;
-			case 'H':
-				consommation = (48 * duree)/60;
+			case "h":
+				consommation = (double)(48 * duree)/60;
 				break;
 			}
 		}
 		else {
 			switch (risque) {
-			case 'F':
-				consommation = (5 * duree)/60;
+			case "f":
+				consommation = (double)(5 * duree)/60;
 				break;
-			case 'M':
-				consommation = (10 * duree)/60;
+			case "m":
+				consommation = (double)(10 * duree)/60;
 				break;
-			case 'H':
-				consommation = (30 * duree)/60;
+			case "h":
+				consommation = (double)(30 * duree)/60;
 				break;
 			}
 		}
@@ -52,10 +52,10 @@ public class Vehicule {
 	public void rechargerBatterie() {
 		batterie = 100;
 	}
-	public char getType() {
+	public String getType() {
 		return type;
 	}
-	public void setType(char type) {
+	public void setType(String type) {
 		this.type = type;
 	}
 	public double getBatterie() {
@@ -64,10 +64,10 @@ public class Vehicule {
 	public void setBatterie(double batterie) {
 		this.batterie = batterie;
 	}
-	public char getRisque() {
+	public String getRisque() {
 		return risque;
 	}
-	public void setRisque(char risque) {
+	public void setRisque(String risque) {
 		this.risque = risque;
 	}
 }

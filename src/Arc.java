@@ -45,5 +45,8 @@ public class Arc {
 		this.sommet2 = sommet2;
 	}
 	
+	public Sommet getOtherSommet(Sommet source){
+		return(source == sommet1) ? sommet2 : sommet1;
+	}
 	
 }
